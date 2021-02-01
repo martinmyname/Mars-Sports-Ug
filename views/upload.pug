@@ -2,8 +2,8 @@ extends layout
 block content
   #foot.container.listing-reg
     form.form-horizontal.was-validated(name='upload' action='/' method='POST' enctype="multipart/form-data" novalidate)
-      h3 Ufarm-product Upload
-      h6.text-danger *Only registered Ufarm Urban farmers are authorised to upload produce*
+      h3 MarsSportsUg-product Upload
+      h6.text-danger *Only registered MarsSportsUg officials are authorised to upload products*
       .row
         .form-group.col-xs-6
           label.control-label(for='product_id') Product ID
@@ -14,9 +14,9 @@ block content
           input#product_name.form-control.input-md(name='product_name' placeholder='name of produce' required='' type='text')
           .invalid-feedback Please input product name.
         .form-group.col-xs-6
-          label.control-label(for='product_quantity') Product Quantity(Kg)
-          input#product_quantity.form-control.input-md(name='product_quantity' placeholder='units of product in stock' required='' type='number')
-          .invalid-feedback Please input product available.
+          label.control-label(for='color') Color
+          input#color.form-control.input-md(name='color' placeholder='available product colors' required='' type='text')
+          .invalid-feedback Please input product colors available.
       .row
         .form-group.col-xs-6
           label Produce type:  &nbsp
@@ -40,9 +40,9 @@ block content
           input#price.form-control.input-md(name='price' placeholder='price for each Kg' required='' type='number')
           .invalid-feedback Input price for each kg.
         .form-group.col-xs-6
-          label.control-label(for='ward') Ward
-          input#ward.form-control.input-md(name='ward' placeholder='ward you come from' required='' type='text')
-          .invalid-feedback Please input ward you come from.
+          label.control-label(for='stock') stock
+          input#stock.form-control.input-md(name='stock' placeholder='Quantity in stock' required='' type='text')
+          .invalid-feedback Please input total available stock.
       .row
         .form-group
           label.control-label(for='directions' placeholder='Directions to pickup location') Directions

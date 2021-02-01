@@ -1,5 +1,5 @@
 {
-  "name": "ufarm2",
+  "name": "mars-sports-ug",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -29,5 +29,13 @@
     "mongoose": "^5.10.11",
     "nodemon": "^2.0.6"
   },
-  "description": ""
+  "description": "gym equipment online shopping ",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/martinmyname/Mars-Sports-Ug.git"
+  },
+  "bugs": {
+    "url": "https://github.com/martinmyname/Mars-Sports-Ug/issues"
+  },
+  "homepage": "https://github.com/martinmyname/Mars-Sports-Ug#readme"
 }

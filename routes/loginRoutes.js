@@ -20,7 +20,7 @@ router.post(
       res.redirect("/users/farmerOnes");
     } else userRole == "farmer";
     {
-      res.redirect("/users/urbanFarmers");
+      res.redirect("/users/admin");
     }
   }
 );

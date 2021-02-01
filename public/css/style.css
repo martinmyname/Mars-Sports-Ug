@@ -30,7 +30,7 @@ footer {
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 body {
-  background: url("../img/ufarmImage4.jpg");
+  background: url("../img/MarsSportsUgImage4.jpg");
 }
 
 .listing-reg h1 {
@@ -192,4 +192,9 @@ label {
 }
 .form-check-input {
   margin: auto;
+}
+.navbar-brand img{
+  border-radius:50%;
+  height: 5%;
+  width: 10%;
 }

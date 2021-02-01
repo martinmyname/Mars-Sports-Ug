@@ -2,7 +2,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const usersRoutes = require("./routes/users.js");
-const Ufarm = require("./routes/index.js");
+const MarsSportsUg = require("./routes/index.js");
 const login = require("./routes/loginRoutes.js");
 const Login = require("./models/login");
 
@@ -41,7 +41,7 @@ passport.serializeUser(Login.serializeUser());
 passport.deserializeUser(Login.deserializeUser());
 
 //all routes on the home root"/"
-app.use("/", Ufarm);
+app.use("/", MarsSportsUg);
 //all routes on the users' root "/users"
 app.use("/users", usersRoutes);
 app.use("/login", login);

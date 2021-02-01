@@ -13,11 +13,11 @@ block content
                   .text-left
                     i #{produce.product_name}@ #{produce.price}Ugx
                     br
-                    i Quantity:#{produce.product_quantity} kg(s)
-                h5.item-card-title Type:#{produce.produce_type} &nbsp Ward:#{produce.ward}
+                    i Color(s):#{produce.color}
+                h5.item-card-title Type:#{produce.produce_type} &nbsp In stock:#{produce.stock}
                 .card-text 
                   p Payment:#{produce.Mode_of_payment} &nbsp Delivery:#{produce.Mode_of_delivery}
                   p Directions #{produce.directions}
-                button#purchase.btn.btn-primary(name=produce._id onclick="phone()" value=produce.phone) purchase
+                button#purchase.btn.btn-primary(name=produce._id onclick="phone()" value=produce.phone) Add to cart
         else
         h4.text-primary You are all caught up at the moment, check back soon for new products

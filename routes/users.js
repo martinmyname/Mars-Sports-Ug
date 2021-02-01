@@ -2,10 +2,10 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
 require("../models/registration.js");
-require("../models/uFarmerReg.js");
+require("../models/MarsSportsUgReg.js");
 
 const FarmerOne = mongoose.model("FarmerOne");
-const UrbanFarmer = mongoose.model("UrbanFarmer");
+const admin = mongoose.model("admin");
 
 //add router for registaring farmerOne
 router.get("/regFarmerOne", (req, res) => {
@@ -35,7 +35,10 @@ router.post("/regFarmerOne", (req, res) => {
 router.get("/farmerOnes", (req, res) => {
   FarmerOne.find()
     .then((farmerOne) => {
-      res.render("farmerOnes", { title: "Ufarm Farmer Ones ", farmerOne });
+      res.render("farmerOnes", {
+        title: "MarsSportsUg Farmer Ones ",
+        farmerOne,
+      });
     })
     .catch(() => {
       res.send("sorry something went wrong");
@@ -45,11 +48,10 @@ router.get("/farmerOnes", (req, res) => {
 //post the data from the regUrbanFarmer form to the DB
 router.post("/regUrbanFarmer", (req, res) => {
   console.log(req.body);
-  const urbanFarmer = new UrbanFarmer(req.body);
-  urbanFarmer
-    .save()
+  const Admin = new admin(req.body);
+  Admin.save()
     .then(() => {
-      res.redirect("/users/urbanFarmers");
+      res.redirect("/users/admin");
     })
     .catch((err) => {
       console.log(err);
@@ -58,12 +60,13 @@ router.post("/regUrbanFarmer", (req, res) => {
 });
 
 //after importing "/users" then navigate to "/"
-router.get("/urbanFarmers", (req, res) => {
-  UrbanFarmer.find()
-    .then((urbanFarmer) => {
-      res.render("urbanFarmers", {
-        title: "Ufarm Urban Farmers ",
-        urbanFarmer,
+router.get("/admin", (req, res) => {
+  admin
+    .find()
+    .then((admin) => {
+      res.render("admin", {
+        title: "MarsSportsUg Urban Farmers ",
+        admin,
       });
     })
     .catch(() => {
@@ -93,7 +96,7 @@ router.post("/update", async (req, res) => {
 //updating urban farmer details
 router.get("/update/uf/:id", async (req, res) => {
   try {
-    const updateUserUF = await UrbanFarmer.findOne({ _id: req.params.id });
+    const updateUserUF = await admin.findOne({ _id: req.params.id });
     res.render("updateUF", { farmer: updateUserUF });
   } catch (err) {
     res.status(400).send("Unable to find farmerOne in the database");
@@ -102,8 +105,8 @@ router.get("/update/uf/:id", async (req, res) => {
 
 router.post("/update/uf", async (req, res) => {
   try {
-    await UrbanFarmer.findOneAndUpdate({ _id: req.query.id }, req.body);
-    res.render("urbanFarmers.pug");
+    await admin.findOneAndUpdate({ _id: req.query.id }, req.body);
+    res.render("admin.pug");
   } catch (err) {
     res.status(404).send("Unable to update Urban Farmer in the database");
   }

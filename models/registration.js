@@ -4,7 +4,7 @@ const farmerOneSchema = new mongoose.Schema({
   firstName: String,
   lastName: String,
   idnumber: String,
-  ward: String,
+  stock: String,
   gender: String,
   dateOfReg: Date,
   dateOfBirth: Date,

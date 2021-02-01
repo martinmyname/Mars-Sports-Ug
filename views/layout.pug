@@ -8,7 +8,9 @@ head
     script(src="/js/checkout.js")
     //Nav bar and its buttons and dropdowns
     nav.navbar.navbar-expand-lg.navbar-dark.text-light
-        a.navbar-brand(href='/') Ufarm
+        a.navbar-brand(href='/')
+            img(src="../img/mars-logo.jpg" alt="Mars Sports logo")
+        a.navbar-brand(href='/') Mars Sports Ug
         button.navbar-toggler(type='button' data-toggle='collapse' data-target='#basicExampleNav' aria-controls='basicExampleNav' aria-expanded='false' aria-label='Toggle navigation')
             span.navbar-toggler-icon
         #basicExampleNav.collapse.navbar-collapse
@@ -17,12 +19,12 @@ head
                     a.nav-link(href='/')
                         | Home
                     span.sr-only (current) &nbsp
-                //Ufarm users dropdown
+                //MarsSportsUg users dropdown
                 li.nav-item.dropdown
-                    a#navbarDropdownMenuLink1.nav-link.dropdown-toggle(data-toggle='dropdown' aria-haspopup='true' aria-expanded='false') User
+                    a#navbarDropdownMenuLink1.nav-link.dropdown-toggle(data-toggle='dropdown' aria-haspopup='true' aria-expanded='false') Customer
                     .dropdown-menu.dropdown-primary(aria-labelledby='navbarDropdownMenuLink1')
                         a.dropdown-item(href='/upload') Urban Farmer
-                        a.dropdown-item(href='/users/urbanFarmers') Farmer One
+                        a.dropdown-item(href='/users/admin') Admin
                         a.dropdown-item(href='/login') Agricultural Officer
                         a.dropdown-item(href='/') Customer
             // Links
@@ -38,9 +40,9 @@ block foot
         .container
             ul.list-unstyled.list-inline.text-center.py-2
                 li.list-inline-item
-                    h5.mb-1 The best online fresh food market nearly free!
+                    h5.mb-1 The best gym equipment on your finger tips, nearly free!
                 li.list-inline-item
-                    a.btn.btn-outline-white.btn-rounded(href='www.gmail.com') Send us feedback on: Ufarm@gmail.com
+                    a.btn.btn-outline-white.btn-rounded(href='www.gmail.com') Send us eedback on: MarssportsUg@gmail.com
                 .footer-copyright.text-center.py-3
                     | Copyright &copy;
                     script.
@@ -48,7 +50,7 @@ block foot
                     |  All rights reserved
                     i(aria-hidden='true')
                     |  by 
-                    a(href='/' target='_blank') Ufarm
+                    a(href='/' target='_blank') Mars Sports Ug
     script(src="/js/FOvalidation.js")
     script(src='https://code.jquery.com/jquery-3.3.1.slim.min.js' integrity='sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo' crossorigin='anonymous')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js' integrity='sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49' crossorigin='anonymous')

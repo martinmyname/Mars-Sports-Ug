@@ -51,11 +51,11 @@ router.post("/", upload.single("image"), (req, res, next) => {
   const myProduct = new product({
     product_id: req.body.product_id,
     product_name: req.body.product_name,
-    product_quantity: req.body.product_quantity,
+    color: req.body.color,
     produce_type: req.body.produce_type,
     price: req.body.price,
     directions: req.body.directions,
-    ward: req.body.ward,
+    stock: req.body.stock,
     Mode_of_payment: req.body.Mode_of_payment,
     Mode_of_delivery: req.body.Mode_of_delivery,
     phone: req.body.phone,
@@ -72,12 +72,12 @@ router.post("/", upload.single("image"), (req, res, next) => {
     });
 });
 
-//Ufarm home page route.
+//MarsSportsUg home page route.
 router.get("/", (req, res) => {
   product
     .find()
     .then((product) => {
-      res.render("index.pug", { title: "Ufarm", product });
+      res.render("index.pug", { title: "Mars Sports Ug", product });
     })
     .catch(() => {
       res.send("sorry something went wrong.");
