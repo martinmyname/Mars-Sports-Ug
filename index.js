@@ -1,20 +1,22 @@
 //import dependencies
 const express = require("express");
 const bodyParser = require("body-parser");
-const usersRoutes = require("./routes/users.js");
+const userRoutes = require("./routes/user");
 const MarsSportsUg = require("./routes/index.js");
-const login = require("./routes/loginRoutes.js");
-const Login = require("./models/login");
+// const login = require("./routes/loginRoutes.js");
+const User = require("./models/user");
+const csrf = require("csurf");
+const csrfProtection = csrf();
+const passport = require("passport");
+const flash = require("connect-flash");
+// const session = require("express-session");
+const MongoStore = require("connect-mongo")(session);
 
 require("dotenv").config();
 const mongoose = require("mongoose");
 const passportLocalMongoose = require("passport-local-mongoose");
 
-const expressSession = require("express-session")({
-  secret: "secret",
-  resave: false,
-  saveUninitialized: false,
-});
+const session = require("express-session");
 
 //create express app
 const app = express();
@@ -28,23 +30,32 @@ app.use(express.static("public"));
 app.use(express.static("uploads"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(expressSession);
+app.use(
+  session({
+    secret: "secret",
+    resave: false,
+    saveUninitialized: false,
+    store: new MongoStore({ mongooseConnection: mongoose.connection }),
+    cookie: { maxAge: 180 * 60 * 1000 },
+  })
+);
+app.use(flash());
 
 /*  PASSPORT SETUP  */
-const passport = require("passport");
 app.use(passport.initialize());
 app.use(passport.session());
 
-//Passport in use
-passport.use(Login.createStrategy());
-passport.serializeUser(Login.serializeUser());
-passport.deserializeUser(Login.deserializeUser());
+app.use(function (req, res, next) {
+  res.locals.login = req.isAuthenticated();
+  next();
+});
 
+//all routes on the users' root "/users"
+app.use("/user", userRoutes);
+// app.use("/user", User);
+// app.use(csrfProtection);
 //all routes on the home root"/"
 app.use("/", MarsSportsUg);
-//all routes on the users' root "/users"
-app.use("/users", usersRoutes);
-app.use("/login", login);
 
 //connect database
 mongoose.connect(process.env.DB_CONNECTION, {
@@ -53,6 +64,7 @@ mongoose.connect(process.env.DB_CONNECTION, {
   useCreateIndex: true,
   useFindAndModify: false,
 });
+require("./passport");
 mongoose.connection
   .on("open", () => {
     console.log("Mongoose connection open");

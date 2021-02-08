@@ -1,0 +1,18 @@
+extends layout
+block content
+  .loading
+    .branding
+      .login
+        if hasErrors 
+          .alert.alert-danger
+            each message in messages
+              p #{message.this}
+        form.needs-validation(method='POST' action='/user/signin')
+          .form-group
+            input.form-control(type='text' name='email' placeholder='Username/email' maxlength="50" minlength="5"
+            pattern="^[a-zA-Z0-9_.-]*$" required='required')
+            .invalid-feedback Please input your username/email.
+            input(type='password' name='password' placeholder='Password' required='required')
+            .invalid-feedback Password input can't be empty.
+            input(type='hidden' name='_csrf' value=`${csrfToken}`)
+          button.btn.btn-primary.btn-block.btn-large(type='submit') Sign in

@@ -1,23 +1,23 @@
 extends layout
 block content
   body
-    div.fluid-container
+    .fluid-container
       .row
         if product.length
           each produce in product
-            .col-md-3.item
+            .col-sm-6.col-md-4 
               .card.item-card.card-block
                 script #{produce.image.contentType}
                 img(src='/'+produce.image height='' width='' alt=`${produce.product_name} ${produce.product_id}`)
-                h5.card-title
-                  .text-left
-                    i #{produce.product_name}@ #{produce.price}Ugx
-                    br
+                h5.card-title.caption
+                    i #{produce.product_name} &nbsp
                     i Color(s):#{produce.color}
                 h5.item-card-title Type:#{produce.produce_type} &nbsp In stock:#{produce.stock}
                 .card-text 
                   p Payment:#{produce.Mode_of_payment} &nbsp Delivery:#{produce.Mode_of_delivery}
-                  p Directions #{produce.directions}
-                button#purchase.btn.btn-primary(name=produce._id onclick="phone()" value=produce.phone) Add to cart
+                  p Description: #{produce.description}
+                  #price Ugx #{produce.price}
+                .card-block.item-card.pull-left 
+                      button.btn.btn-primary.pull-right(name=produce._id onclick="phone()" value=produce.phone) Add to cart
         else
         h4.text-primary You are all caught up at the moment, check back soon for new products

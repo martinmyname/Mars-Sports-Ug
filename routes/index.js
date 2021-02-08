@@ -5,7 +5,10 @@ var multer = require("multer");
 const path = require("path");
 const mongoose = require("mongoose");
 require("../models/uploadProduct.js");
+
 const product = mongoose.model("product");
+// const session = require("express-session");
+
 // mongoose.Promise = global.Promise;
 const bodyParser = require("body-parser");
 
@@ -14,6 +17,7 @@ router.get("/upload", (req, res) => {
 });
 
 router.use(bodyParser.urlencoded({ extended: true }));
+
 // router.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Define the photo paths
@@ -31,21 +35,6 @@ var storage = multer.diskStorage({
 
 var upload = multer({ storage: storage });
 
-//Post data to the home route.
-// router.post("/", (req, res) => {
-//   console.log(req.body);
-//   const myProduct = new product(req.body);
-//   myProduct
-//     .save()
-//     .then(() => {
-//       res.redirect("/");
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//       res.send("something went wrong,");
-//     });
-// });
-
 //Option 2 for posting image
 router.post("/", upload.single("image"), (req, res, next) => {
   const myProduct = new product({
@@ -54,7 +43,7 @@ router.post("/", upload.single("image"), (req, res, next) => {
     color: req.body.color,
     produce_type: req.body.produce_type,
     price: req.body.price,
-    directions: req.body.directions,
+    description: req.body.description,
     stock: req.body.stock,
     Mode_of_payment: req.body.Mode_of_payment,
     Mode_of_delivery: req.body.Mode_of_delivery,

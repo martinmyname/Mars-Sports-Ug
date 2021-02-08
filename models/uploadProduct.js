@@ -6,7 +6,7 @@ const upload = new mongoose.Schema({
   color: String,
   produce_type: String,
   price: Number,
-  directions: String,
+  description: String,
   stock: String,
   Mode_of_payment: String,
   Mode_of_delivery: String,
