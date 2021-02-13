@@ -1,0 +1,32 @@
+extends layout
+block content
+        .container
+            if products.length
+                .row
+                    .col-sm-12.col-md-12.col-md-offset-3.col-sm-offset-3.card.item-card.card-block
+                        ul.list-group
+                            each produce in products
+                                li.list-group-item
+                                    span.badge   #{produce.qty }
+                                    strong    #{produce.item.product_name } 
+                                    span.label.label-success Ugx #{produce.price }    
+                                    .btn-group
+                                        button.btn.btn-primary.btn-xs.dropdown-toggle(type='button' data-toggle='dropdown')
+                                            | Action 
+                                            span.caret
+                                        ul.dropdown-menu
+                                            li
+                                                a(href='/reduce/'+ produce.item._id) Reduce by 1
+                                            li
+                                                a(href='/remove/'+ produce.item._id) Remove All
+                .row
+                    .col-sm-12.col-md-12.col-md-offset-3.col-sm-offset-3.card.item-card.card-block
+                        strong Total: Ugx  #{totalPrice }
+                hr
+                .row
+                    .col-sm-12.col-md-12.col-md-offset-3.col-sm-offset-3.card.item-card.card-block
+                        a.btn.btn-success(href='/checkout' type='button') Checkout
+            else
+                .row
+                    .col-sm-12.col-md-12.col-md-offset-3.col-sm-offset-3.card.item-card.card-block
+                        h2 No Items in Cart

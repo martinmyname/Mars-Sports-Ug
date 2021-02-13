@@ -10,13 +10,14 @@ const csrfProtection = csrf();
 const passport = require("passport");
 const flash = require("connect-flash");
 // const session = require("express-session");
-const MongoStore = require("connect-mongo")(session);
+var Cart = require("./models/cart");
 
 require("dotenv").config();
 const mongoose = require("mongoose");
 const passportLocalMongoose = require("passport-local-mongoose");
 
 const session = require("express-session");
+const MongoStore = require("connect-mongo")(session);
 
 //create express app
 const app = express();
@@ -47,6 +48,7 @@ app.use(passport.session());
 
 app.use(function (req, res, next) {
   res.locals.login = req.isAuthenticated();
+  res.locals.session = req.session;
   next();
 });
 

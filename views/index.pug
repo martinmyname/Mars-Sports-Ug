@@ -18,6 +18,7 @@ block content
                   p Description: #{produce.description}
                   #price Ugx #{produce.price}
                 .card-block.item-card.pull-left 
-                      button.btn.btn-primary.pull-right(name=produce._id onclick="phone()" value=produce.phone) Add to cart
+                      a(href="/add-to-cart/"+`${produce._id}`) 
+                        button.btn.btn-primary.pull-right(name=produce._id onclick="phone()" value=produce.phone) Add to cart
         else
         h4.text-primary You are all caught up at the moment, check back soon for new products

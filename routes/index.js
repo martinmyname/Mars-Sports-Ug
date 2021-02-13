@@ -5,6 +5,8 @@ var multer = require("multer");
 const path = require("path");
 const mongoose = require("mongoose");
 require("../models/uploadProduct.js");
+var Cart = require("../models/cart");
+var Order = require("../models/order");
 
 const product = mongoose.model("product");
 // const session = require("express-session");
@@ -73,6 +75,46 @@ router.get("/", (req, res) => {
     });
 });
 
+router.get("/add-to-cart/:id", function (req, res, next) {
+  var productId = req.params.id;
+  var cart = new Cart(req.session.cart ? req.session.cart : {});
+
+  product.findById(productId, function (err, Product) {
+    cart.add(Product, Product.id);
+    req.session.cart = cart;
+    res.redirect("/");
+  });
+});
+
+//reducing items in the cart routes
+router.get("/reduce/:id", function (req, res, next) {
+  var productId = req.params.id;
+  var cart = new Cart(req.session.cart ? req.session.cart : {});
+  cart.reduceByOne(productId);
+  req.session.cart = cart;
+  res.redirect("/shopping-cart");
+});
+//removing items in the cart routes
+router.get("/remove/:id", function (req, res, next) {
+  var productId = req.params.id;
+  var cart = new Cart(req.session.cart ? req.session.cart : {});
+  cart.removeItem(productId);
+  req.session.cart = cart;
+  res.redirect("/shopping-cart");
+});
+
+//checkout routes
+router.get("/shopping-cart", (req, res, next) => {
+  if (!req.session.cart) {
+    return res.render("shopping-cart", { products: null });
+  }
+  var cart = new Cart(req.session.cart);
+  res.render("shopping-cart", {
+    products: cart.generateArray(),
+    totalPrice: cart.totalPrice,
+  });
+});
+
 //router for search bar
 router.get("/productList", async (req, res) => {
   try {
@@ -86,14 +128,44 @@ router.get("/productList", async (req, res) => {
   }
 });
 
-//route to the checkout page
-router.get("/checkout/:id", async (req, res) => {
-  try {
-    const checkout = await farmerOne.findOne({ _id: req.params.id });
-    res.render("checkout.pug", { farmer: checkout });
-  } catch (err) {
-    res.status(400).send("Unable to find farmer in the database");
+router.get("/checkout", isLoggedIn, function (req, res, next) {
+  if (!req.session.cart) {
+    return res.redirect("/shopping-cart");
   }
+  var cart = new Cart(req.session.cart);
+  var errMsg = req.flash("error")[0];
+  res.render("checkout", {
+    total: cart.totalPrice,
+    errMsg: errMsg,
+    noError: !errMsg,
+  });
+});
+
+router.post("/checkout", isLoggedIn, function (req, res, next) {
+  if (!req.session.cart) {
+    return res.redirect("/shopping-cart");
+  }
+  // var cart = new Cart(req.session.cart);
+
+  var order = new Order({
+    user: req.user,
+    cart: req.session.cart,
+    address: req.body.address,
+    name: req.body.name,
+    // paymentId: charge.id,
+  });
+  order.save(function (err, result) {
+    req.flash("success", "Successfully bought product!");
+    req.session.cart = null;
+    res.redirect("/");
+  });
 });
 
 module.exports = router;
+function isLoggedIn(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  req.session.oldUrl = req.url;
+  res.redirect("/user/signin");
+}

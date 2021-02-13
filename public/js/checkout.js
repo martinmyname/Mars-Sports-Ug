@@ -1,9 +1,5 @@
-const phone = () => {
-  const button = document.getElementById("purchase");
-  const phoneNumber = button.value;
-  if (button.textContent != phoneNumber) {
-    button.textContent = phoneNumber;
-  } else {
-    button.textContent = "purchase";
-  }
-};
+// find the element
+var element = document.getElementById("my-unique-identifer");
+
+// set the attribute
+element.setAttribute("data-amount", 200.98);
