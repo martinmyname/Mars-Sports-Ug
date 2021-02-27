@@ -7,9 +7,18 @@ const mongoose = require("mongoose");
 require("../models/uploadProduct.js");
 var Cart = require("../models/cart");
 var Order = require("../models/order");
+const paypal = require("paypal-rest-sdk");
 
 const product = mongoose.model("product");
 // const session = require("express-session");
+
+paypal.configure({
+  mode: "sandbox", //sandbox
+  client_id:
+    "AQD6FmDGc_cdy9j4BOed9omUa-ZWVE8XbPb5ekhKIX3rNWeo16ooSp8Wk9v75XtfANA06jj93RAuYYat",
+  client_secret:
+    "EJ0RK1G88iHU-p5CltzlOynY0PsFkaDQDW4QoVtHdE6JYlAqQKJfAYEadOmM66OWc2EYvBfJjEAqg7vQ",
+});
 
 // mongoose.Promise = global.Promise;
 const bodyParser = require("body-parser");
@@ -145,21 +154,98 @@ router.post("/checkout", isLoggedIn, function (req, res, next) {
   if (!req.session.cart) {
     return res.redirect("/shopping-cart");
   }
-  // var cart = new Cart(req.session.cart);
+  const cart = new Cart(req.session.cart);
+  const create_payment_json = {
+    intent: "sale",
+    payer: {
+      payment_method: "paypal",
+    },
+    redirect_urls: {
+      return_url: "http://localhost:3000/success",
+      cancel_url: "http://localhost:3000/cancel",
+    },
+    transactions: [
+      {
+        // item_list: {
+        //   items: [
+        //     {
+        //       name: "Dumbells",
+        //       sku: "003",
+        //       price: "25.00",
+        //       currency: "USD",
+        //       quantity: 2,
+        //     },
+        //   ],
+        // },
+        amount: {
+          currency: "USD",
+          total: cart.totalPrice,
+        },
+        description: "workout equipment",
+      },
+    ],
+  };
 
-  var order = new Order({
-    user: req.user,
-    cart: req.session.cart,
-    address: req.body.address,
-    name: req.body.name,
-    // paymentId: charge.id,
-  });
-  order.save(function (err, result) {
-    req.flash("success", "Successfully bought product!");
-    req.session.cart = null;
-    res.redirect("/");
+  paypal.payment.create(create_payment_json, function (error, payment) {
+    if (error) {
+      throw error;
+    } else {
+      for (let i = 0; i < payment.links.length; i++) {
+        if (payment.links[i].rel === "approval_url") {
+          res.redirect(payment.links[i].href);
+        }
+      }
+    }
   });
 });
+
+router.get("/success", (req, res) => {
+  const cart = new Cart(req.session.cart);
+  const payerId = req.query.PayerID;
+  const paymentId = req.query.paymentId;
+
+  const execute_payment_json = {
+    payer_id: payerId,
+    transactions: [
+      {
+        amount: {
+          currency: "USD",
+          total: cart.totalPrice,
+        },
+      },
+    ],
+  };
+
+  paypal.payment.execute(
+    paymentId,
+    execute_payment_json,
+    function (error, payment) {
+      if (error) {
+        console.log(error.response);
+        throw error;
+      } else {
+        console.log(JSON.stringify(payment));
+        var order = new Order({
+          user: req.user,
+          cart: cart,
+          address: req.body.address,
+          name: req.body.name,
+          // paymentId: charge.id,
+        });
+        order.save(function (err, result) {
+          req.flash("success", "Successfully bought product!");
+          req.session.cart = null;
+          res.redirect("/");
+        });
+        // res.send("Transaction Successful, Thanks for supporting MarsSportsUg");
+      }
+    }
+  );
+});
+
+router.get("/cancel", (req, res) =>
+  res.send("Transaction Cancelled or unexpected error occured")
+);
 
 module.exports = router;
 function isLoggedIn(req, res, next) {

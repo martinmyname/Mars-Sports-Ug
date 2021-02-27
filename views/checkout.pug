@@ -21,27 +21,8 @@ block content
                     hr
                     .col-xs-12
                         .form-group
-                            #my-unique-identifer.mobile-money-qr-payment(data-api-user-id='b12d7b22-3057-4c8e-ad50-63904171d18c' data-amount='100' data-currency='EUR' data-external-id='144-123-323')
-                            label(for='mobile-money-qr-payment') Mobile Money
-                            //- input.form-control(type='text' required='')
-                    .col-xs-12
-                        .form-group
-                            label(for='card-number') Credit Card Number
-                            input#card-number.form-control(type='text' required='')
-                    .col-xs-12
-                        .row
-                            .col-xs-6
-                                .form-group
-                                    label(for='card-expiry-month') Expiration Month
-                                    input#card-expiry-month.form-control(type='text' required='')
-                            .col-xs-6
-                                .form-group
-                                    label(for='card-expiry-year') Expiration Year
-                                    input#card-expiry-year.form-control(type='text' required='')
-                    .col-xs-12
-                        .form-group
-                            label(for='card-cvc') CVC
-                            input#card-cvc.form-control(type='text' required='')
+                            label(for='Paypal') Paypal
+                             input.form-control(type='radio' required='')
                 button.btn.btn-success(type='submit') Buy now
     script(type='text/javascript' src='https://js.stripe.com/v2/')
     script(type='text/javascript' src='javascripts/checkout.js')

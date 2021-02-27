@@ -11,6 +11,7 @@ const passport = require("passport");
 const flash = require("connect-flash");
 // const session = require("express-session");
 var Cart = require("./models/cart");
+const paypal = require("paypal-rest-sdk");
 
 require("dotenv").config();
 const mongoose = require("mongoose");
