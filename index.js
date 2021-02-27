@@ -1,3 +1,7 @@
+let port = process.env.PORT;
+if (port == null || port == "") {
+  port = 3000;
+}
 //import dependencies
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -95,6 +99,8 @@ app.get("*", (req, res) => {
 });
 
 //app runs on port http://localhost:3000
-app.listen(3000, () => {
-  console.log("Listening on port:http://localhost:3000");
-});
+// app.listen(3000, () => {
+//   console.log("Listening on port:http://localhost:3000");
+// });
+
+app.listen(port);
